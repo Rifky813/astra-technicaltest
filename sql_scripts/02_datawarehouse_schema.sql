@@ -3,7 +3,7 @@
 CREATE DATABASE IF NOT EXISTS datawarehouse;
 USE datawarehouse;
 
-CREATE TABLE dim_customer (
+CREATE TABLE IF NOT EXISTS dim_customer (
 	customer_sk INT AUTO_INCREMENT PRIMARY KEY,
 	src_customer_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE dim_customer (
     INDEX (src_customer_id)
 );	
 
-CREATE TABLE fact_sales (
+CREATE TABLE IF NOT EXISTS fact_sales (
 	sales_sk INT AUTO_INCREMENT PRIMARY KEY,
     vin VARCHAR(17),
     customer_sk INT NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE fact_sales (
     FOREIGN KEY (customer_sk) REFERENCES dim_customer(customer_sk)
 );
 
-CREATE TABLE fact_after_sales (
+CREATE TABLE IF NOT EXISTS fact_after_sales (
 	after_sales_sk INT AUTO_INCREMENT PRIMARY KEY,
     service_ticket VARCHAR(9),
     vin VARCHAR(17),
