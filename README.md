@@ -33,13 +33,13 @@ Proses pengolahan data dibagi menjadi tiga skema database:
    ```env
    DB_HOST=mysql
    DB_USER=root
-   DB_PASSWORD=password_database_anda
+   DB_PASSWORD=root
    DB_NAME=staging
    DB_PORT=3306
 2. Pastikan file sumber data berformat CSV berada di dalam folder  `data_drops/.`
 3. Buka terminal pada direktori proyek dan jalankan perintah:
 ```bash
-docker-compose up -d --build
+docker-compose up --build
 ```
 4. Container akan aktif, menunggu layanan MySQL siap (sekitar 60 detik), dan langsung menjalankan proses ELT satu kali sebelum mengaktifkan jadwal cron.
 5. Log proses penjadwalan akan tersimpan dan dapat diperiksa pada path `/var/log/cron.log` di dalam container etl.
