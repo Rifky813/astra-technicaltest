@@ -7,8 +7,8 @@ from sqlalchemy import create_engine
 DB_CONFIG = {
     "host": os.environ.get("DB_HOST", "localhost"),
     "port": int(os.environ.get("DB_PORT", "3306")),
-    "user": os.environ.get("DB_USER", "root"),
-    "password": os.environ.get("DB_PASSWORD", "rBase!13"),
+    "user": os.environ.get("DB_USER"),
+    "password": os.environ.get("DB_PASSWORD"),
     "database": os.environ.get("DB_NAME", "staging")
 }
 
@@ -43,7 +43,6 @@ def ingest_csv_to_mysql():
             df['created_at'] = pd.to_datetime(df['created_at'])
             
             # Load ke MySQL
-            # 'append' agar data harian bertambah terus, gunakan 'replace' jika ingin mengganti seluruh data harian
             df.to_sql(TABLE_NAME, con=engine, if_exists='append', index=False)
             
             print(f"Ingest Berhasil: {len(df)} baris ke tabel {TABLE_NAME}.")
