@@ -1,22 +1,18 @@
-version: "3.9"
-
 services:
   mysql:
     image: mysql:8.0
     container_name: astra_mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rBase!13
-      MYSQL_DATABASE: staging
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./sql_scripts/staging_schema.sql:/docker-entrypoint-initdb.d/01_staging_schema.sql:ro
-      - ./sql_scripts/datawarehouse_schema.sql:/docker-entrypoint-initdb.d/02_datawarehouse_schema.sql:ro
-      - ./sql_scripts/datamart_schema.sql:/docker-entrypoint-initdb.d/03_datamart_schema.sql:ro
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prBase!13"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${DB_USER}", "-p${DB_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -30,13 +26,13 @@ services:
         condition: service_healthy
     volumes:
       - .:/app:cached
+      - ./data_drops:/app/data_drops
     environment:
-      DB_HOST: mysql
-      DB_USER: root
-      DB_PASSWORD: rBase!13
-      DB_NAME: staging
-      DB_PORT: 3306
-    command: ["python", "extract.py"]
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
 
 volumes:
   mysql_data:
