@@ -4,13 +4,10 @@ import glob
 from datetime import datetime
 from sqlalchemy import create_engine
 
-DB_CONFIG = {
-    "host": os.environ.get("DB_HOST", "localhost"),
-    "port": int(os.environ.get("DB_PORT", "3306")),
-    "user": os.environ.get("DB_USER"),
-    "password": os.environ.get("DB_PASSWORD"),
-    "database": os.environ.get("DB_NAME", "staging")
-}
+DB_URL = (
+    f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@"
+    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+)
 
 SOURCE_FOLDER = "./data_drops/"
 FILE_PATTERN = "customer_address_*.csv"
@@ -26,11 +23,7 @@ def get_latest_file(folder, pattern):
 
 def ingest_csv_to_mysql():
     # Koneksi ke database
-    conn_str = (
-        f"mysql+pymysql://{DB_CONFIG['user']}:{DB_CONFIG['password']}@"
-        f"{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}"
-    )
-    engine = create_engine(conn_str)
+    engine = create_engine(DB_URL)
     
     # Cari file hari ini
     target_file = get_latest_file(SOURCE_FOLDER, FILE_PATTERN)
