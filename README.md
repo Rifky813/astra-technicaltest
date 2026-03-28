@@ -29,21 +29,22 @@ Proses pengolahan data dibagi menjadi tiga skema database:
 4. **Otomatisasi**: Sistem Cron di dalam container Docker telah diatur untuk menjalankan skrip `main_elt.py` setiap hari pada pukul 01:00.
 
 ## Cara Menjalankan Proyek
-1. Buat konfigurasi file `.env` di direktori utama dengan variabel berikut:
+1. Jalankan `git clone https://github.com/Rifky813/astra-technicaltest.git` pada folder pilihan anda
+2. Buat konfigurasi file `.env` di direktori utama dengan variabel berikut:
    ```env
    DB_HOST=mysql
    DB_USER=root
    DB_PASSWORD=root
    DB_NAME=staging
    DB_PORT=3306
-2. Pastikan file sumber data berformat CSV berada di dalam folder  `data_drops/.`
-3. Buka terminal pada direktori proyek dan jalankan perintah:
+3. Pastikan file sumber data berformat CSV berada di dalam folder  `data_drops/.`
+4. Buka terminal pada direktori proyek dan jalankan perintah:
 ```bash
 docker-compose up --build
 ```
-4. Container akan aktif, menunggu layanan MySQL siap (sekitar 60 detik), dan langsung menjalankan proses ELT satu kali sebelum mengaktifkan jadwal cron.
-5. Log proses penjadwalan akan tersimpan dan dapat diperiksa pada path `/var/log/cron.log` di dalam container etl.
-6. Anda bisa connect ke server dengan MySQL Workbench memakai:
+5. Container akan aktif, menunggu layanan MySQL siap (sekitar 60 detik), dan langsung menjalankan proses ELT satu kali sebelum mengaktifkan jadwal cron.
+6. Log proses penjadwalan akan tersimpan dan dapat diperiksa pada path `/var/log/cron.log` di dalam container etl.
+7. Anda bisa connect ke server dengan MySQL Workbench memakai:
    - host: `localhost`
    - user: `root`
    - password: `root`
