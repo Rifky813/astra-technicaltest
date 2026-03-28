@@ -49,3 +49,4 @@ docker-compose up --build
    - user: `root`
    - password: `root`
    - port: `3307`
+  Dan lakukan query SELECT pada Data Mart ataupun Data Warehouse untuk menampilkan data yang diperlukan sebagai user.
