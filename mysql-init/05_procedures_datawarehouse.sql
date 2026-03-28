@@ -1,5 +1,10 @@
 -- insert to data warehouse
 
+DELIMITER //
+
+CREATE PROCEDURE sp_load_datawarehouse()
+BEGIN
+
 INSERT INTO fact_sales (vin, customer_sk, model, invoice_date, price, transaction_date)
 SELECT 
     s.vin, 
@@ -46,3 +51,7 @@ SELECT
     af.created_at AS transaction_date
 FROM staging.after_sales_raw af
 JOIN datawarehouse.dim_customer dc ON af.customer_id = dc.src_customer_id;
+
+END //
+
+DELIMITER ;

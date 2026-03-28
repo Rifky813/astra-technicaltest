@@ -1,5 +1,10 @@
 -- insert to data mart
 
+DELIMITER //
+
+CREATE PROCEDURE sp_load_datamart()
+BEGIN
+
 INSERT INTO datamart.mart_sales_monthly (periode, class, model, total)
 SELECT
 	DATE_FORMAT(invoice_date, '%Y-%m-%d') AS periode,
@@ -55,3 +60,7 @@ ON DUPLICATE KEY UPDATE
     count_service = VALUES(count_service),
     priority = VALUES(priority),
     address = VALUES(address);
+
+END //
+
+DELIMITER ;
