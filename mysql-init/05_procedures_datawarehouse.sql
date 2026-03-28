@@ -5,7 +5,7 @@ DELIMITER //
 CREATE PROCEDURE sp_load_datawarehouse()
 BEGIN
 
-INSERT INTO fact_sales (vin, customer_sk, model, invoice_date, price, transaction_date)
+INSERT INTO datawarehouse.fact_sales (vin, customer_sk, model, invoice_date, price, transaction_date)
 SELECT 
     s.vin, 
     dc.customer_sk, -- ambil SK, bukan ID asli
@@ -16,7 +16,7 @@ SELECT
 FROM staging.sales_raw s
 JOIN datawarehouse.dim_customer dc ON s.customer_id = dc.src_customer_id;
 
-INSERT INTO dim_customer (src_customer_id, name, dob, address, city, province, registration_date, address_updated_at)
+INSERT INTO datawarehouse.dim_customer (src_customer_id, name, dob, address, city, province, registration_date, address_updated_at)
 SELECT
 	cr.id,
     cr.name,
@@ -40,7 +40,7 @@ SELECT
 FROM staging.customers_raw cr
 LEFT JOIN staging.customer_addresses ca ON cr.id = ca.customer_id;
 
-INSERT INTO fact_after_sales (service_ticket, vin, customer_sk, model, service_date, service_type, transaction_date)
+INSERT INTO datawarehouse.fact_after_sales (service_ticket, vin, customer_sk, model, service_date, service_type, transaction_date)
 SELECT
 	af.service_ticket,
     af.vin,
